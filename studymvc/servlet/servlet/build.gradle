@@ -1,0 +1,51 @@
+plugins {
+	id 'java'
+	id 'war'
+	id 'org.springframework.boot' version '3.4.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'hello'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+//	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+//	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	// ✨ Servlet 관련 추가 (Spring Boot 3.x는 jakarta.servlet 사용)
+//	providedRuntime 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+	implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+
+}
+
+test { 
+	useJUnitPlatform()
+}
+
+// tasks.named('test') -> test
+// test라는 gradle task를 실행할 때 JUnit을 사용한다는 뜻
+// tasks.named("test")를 통해 test라는 이름의 task를 찾고 내부에서 useJUnitPlatform()를 실행함
+// 그 과정에서 인텔리제이가 위처럼 해당 메서드를 인식하지 못해서 발생하는 IDE 에러 혹은 경고
